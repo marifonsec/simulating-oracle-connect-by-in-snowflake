@@ -50,16 +50,24 @@ Implementei uma **CTE recursiva (`WITH RECURSIVE`)** com as seguintes estratégi
 - Mantive os valores do nó raiz (`INT_NUM_ROOT`, `MSLINK_ROOT`) desde o início da recursão, simulando o `CONNECT_BY_ROOT`.
 
 ---
+## 🧰 Sobre os dados e scripts incluídos
 
-## 🧪 Exemplo com dados mockados
+Para facilitar o entendimento e a reprodução da lógica, incluí neste repositório alguns **dados simulados** gerados por IA e os scripts:
 
-Para demonstrar a lógica sem expor dados reais, utilizei uma estrutura simulada:
+Os dados são duas tabelas, a de instalação e de consumidores:
+- `instalacao.csv`: componentes da rede (ex: chaves, trafos), com relações hierárquicas (pai-filho).
+- `consumidor.csv`: consumidores finais ligados a algumas dessas instalações.
 
-- `INSTALACAO_OPERACAO`: estrutura da rede (equipamentos, conexões)
-- `CONSUMIDOR`: consumidores finais ligados a cada nó
+Esses dados não representam nenhuma estrutura real, apenas simulam a dinâmica necessária para testar a lógica recursiva.
+
+Já sobre os scripts, temos:
+- `create_tables.sql`: cria as tabelas `INSTALACAO_OPERACAO` e `CONSUMIDOR` no ambiente Snowflake.
+- `oracle_connect_by_example.sql`: mostra como o problema era resolvido no Oracle, usando `CONNECT BY nocycle`.
+- `recursive_cte_with_loop_protection.sql`: versão em Snowflake usando `WITH RECURSIVE`, controle de caminho (`CAMINHO`) e `POSITION(...)` para prevenir loops — simulando o comportamento do Oracle.
+
+Você pode usar esses arquivos para testar localmente a solução, adaptar à sua realidade ou simplesmente entender como a recursividade funciona em bancos modernos sem suporte nativo a `CONNECT BY`.
 
 ---
-
 ## 📌 Destaques técnicos
 
 - Simulação do `CONNECT BY nocycle` do Oracle no Snowflake
