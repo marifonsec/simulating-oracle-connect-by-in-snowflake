@@ -62,8 +62,8 @@ Esses dados não representam nenhuma estrutura real, apenas simulam a dinâmica 
 
 Já sobre os scripts, temos:
 - `create_tables.sql`: cria as tabelas `INSTALACAO_OPERACAO` e `CONSUMIDOR` no ambiente Snowflake.
-- `oracle_connect_by_example.sql`: mostra como o problema era resolvido no Oracle, usando `CONNECT BY nocycle`.
-- `recursive_cte_with_loop_protection.sql`: versão em Snowflake usando `WITH RECURSIVE`, controle de caminho (`CAMINHO`) e `POSITION(...)` para prevenir loops — simulando o comportamento do Oracle.
+- `script-oracle.sql`: mostra como o problema era resolvido no Oracle, usando `CONNECT BY nocycle`.
+- `script-snowflake.sql`: versão em Snowflake usando `WITH RECURSIVE`, controle de caminho (`CAMINHO`) e `POSITION(...)` para prevenir loops — simulando o comportamento do Oracle.
 
 Você pode usar esses arquivos para testar localmente a solução, adaptar à sua realidade ou simplesmente entender como a recursividade funciona em bancos modernos sem suporte nativo a `CONNECT BY`.
 
