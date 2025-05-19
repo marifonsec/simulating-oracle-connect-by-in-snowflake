@@ -23,12 +23,18 @@ O objetivo era simples (na teoria):
 ### 🧱 Limitação encontrada
 
 No Snowflake, não existe suporte ao `CONNECT BY`.  
-A recursividade só é possível via `WITH RECURSIVE`, — que, naturalmente, não existe uma proteção automática contra loops.
+A recursividade só é possível via `WITH RECURSIVE`, — que, naturalmente, não possui proteção automática contra loops.
 
-O desafio era:  
-🔄 Recriar esse comportamento **manualmente**, de forma confiável e performática.
+Além disso, durante a implementação, enfrentei dois desafios importantes:
 
----
+1. **Valores zerados ao definir ponto de partida**  
+   Quando defini um ponto de partida fixo (por exemplo, uma chave), percebi que alguns componentes, normalmente abertos e sem consumidores diretos, retornavam `0` consumidores, mesmo que em cenários de manobra pudessem estar alimentando toda a rede.  
+
+2. **Recursão infinita ao não definir ponto de partida**  
+   Quando deixei a recursão livre (sem ponto de partida definido), tentando simular o `START WITH 1=1` do Oracle, a consulta nunca finalizava — entrava em loop.  
+
+O desafio era, portanto:  
+🔄 Recriar esse comportamento manualmente, de forma confiável, segura contra ciclos e representando adequadamente a dinâmica da rede.
 
 ## ✅ Solução adotada
 
