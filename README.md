@@ -1,18 +1,18 @@
 
 # Contando clientes em redes hierárquicas no Snowflake
 
-## ❓ Desafio (Problemática)
+## Desafio (Problemática)
 
-Em redes técnicas — como redes elétricas — os componentes (subestações, chaves, transformadores, etc.) se organizam de forma hierárquica e dinâmica.  
-Cada componente podem ter outros componentes a jusante e a montante e, consumidores associados a determinados componentes.
+Em redes técnicas — como redes elétricas — os componentes (disjuntores, chaves, transformadores, etc.) se organizam de forma hierárquica e dinâmica.  
+Cada componente podem ter outros componentes a jusante e a montante e, consumidores associados a eles.
 
 O objetivo era simples (na teoria):
 
 > **Contar quantos consumidores estão associados a cada componente da rede, considerando todos os nós jusantes, sem entrar em loop.**
 
-### ⚠️ Por que isso é difícil?
+### Por que isso é difícil?
 
-- A topologia da rede é dinâmica: a hierarquia dos componentes podem mudar conforme manobras (ex: abrir ou fechar uma chave).
+- A topologia da rede é dinâmica: a hierarquia dos componentes pode mudar conforme manobras (ex: abrir ou fechar uma chave).
 - Algumas estruturas podem estar, erroneamente, desenhado na hierarquia, promovendo loops.
 - O script original em Oracle resolvia isso com:
   ```sql
@@ -20,7 +20,7 @@ O objetivo era simples (na teoria):
   ```
   ...o que automaticamente percorre a rede e evita loops.
 
-### 🧱 Limitação encontrada
+### Limitação encontrada
 
 No Snowflake, não existe suporte ao `CONNECT BY`.  
 A recursividade só é possível via `WITH RECURSIVE`, — que, naturalmente, não possui proteção automática contra loops.
@@ -34,9 +34,9 @@ Além disso, durante a implementação, enfrentei dois desafios importantes:
    Quando deixei a recursão livre (sem ponto de partida definido), tentando simular o `START WITH 1=1` do Oracle, a consulta nunca finalizava — entrava em loop.  
 
 O desafio era, portanto:  
-🔄 Recriar esse comportamento manualmente, de forma confiável, segura contra ciclos e representando adequadamente a dinâmica da rede.
+- Recriar esse comportamento manualmente, de forma confiável, segura contra ciclos e representando adequadamente a dinâmica da rede.
 
-## ✅ Solução adotada
+## Solução adotada
 
 Implementei uma **CTE recursiva (`WITH RECURSIVE`)** com as seguintes estratégias:
 
@@ -56,7 +56,7 @@ Implementei uma **CTE recursiva (`WITH RECURSIVE`)** com as seguintes estratégi
 - Mantive os valores do nó raiz (`INT_NUM_ROOT`, `MSLINK_ROOT`) desde o início da recursão, simulando o `CONNECT_BY_ROOT`.
 
 ---
-## 🧰 Sobre os dados e scripts incluídos
+## Sobre os dados e scripts incluídos
 
 Para facilitar o entendimento e a reprodução da lógica, incluí neste repositório alguns **dados simulados** gerados por IA e os scripts:
 
@@ -74,7 +74,7 @@ Já sobre os scripts, temos:
 Você pode usar esses arquivos para testar localmente a solução, adaptar à sua realidade ou simplesmente entender como a recursividade funciona em bancos modernos sem suporte nativo a `CONNECT BY`.
 
 ---
-## 📌 Destaques técnicos
+## Destaques técnicos
 
 - Simulação do `CONNECT BY nocycle` do Oracle no Snowflake
 - Recursão segura com prevenção de ciclos
@@ -85,4 +85,4 @@ Você pode usar esses arquivos para testar localmente a solução, adaptar à su
 
 ## ✍️ Autor(a)
 
-Desenvolvido por [Mariana 💡](https://www.linkedin.com/in/mariana-fonseca-f/), engenheira de dados apaixonada por resolver desafios reais com soluções robustas e escaláveis.
+Desenvolvido por [Mariana Fonseca](https://www.linkedin.com/in/mariana-fonseca-f/), engenheira de dados apaixonada por resolver desafios reais com soluções robustas e escaláveis.
